@@ -35,11 +35,13 @@ def load_docs(corpus, doc_idxs):
     results = [corpus[int(idx)] for idx in doc_idxs]
     return results
 
-def load_model(model_path: str, use_fp16: bool = False):
+def load_model(model_path: str, use_fp16: bool = False, device: torch.device = None):
     model_config = AutoConfig.from_pretrained(model_path, trust_remote_code=True)
     model = AutoModel.from_pretrained(model_path, trust_remote_code=True)
-    model.eval()
-    model.cuda()
+    # Shijun
+    model.to(device).eval()
+    # model.eval()
+    # model.cuda()
     if use_fp16: 
         model = model.half()
     tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True, trust_remote_code=True)
@@ -69,8 +71,13 @@ class Encoder:
         self.max_length = max_length
         self.use_fp16 = use_fp16
 
-        self.model, self.tokenizer = load_model(model_path=model_path, use_fp16=use_fp16)
-        self.model.eval()
+        # Shijun
+        self.device = torch.device("cuda", index=0) if torch.cuda.is_available() else torch.device("cpu")
+
+        self.model, self.tokenizer = load_model(model_path=model_path, use_fp16=use_fp16, device=self.device)
+        # self.model.eval()
+        self.model.to(self.device).eval()
+        import threading; self.lock = threading.Lock()
 
     @torch.no_grad()
     def encode(self, query_list: List[str], is_query=True) -> np.ndarray:
@@ -94,6 +101,8 @@ class Encoder:
                                 truncation=True,
                                 return_tensors="pt"
                                 )
+        # Shijun
+        # inputs = {k: v.to(self.device) for k, v in inputs.items()}
         inputs = {k: v.cuda() for k, v in inputs.items()}
 
         if "T5" in type(self.model).__name__:

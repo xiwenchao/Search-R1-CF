@@ -1,7 +1,7 @@
 
-file_path=/the/path/you/save/corpus
+file_path='data/amazon_data'
 index_file=$file_path/e5_Flat.index
-corpus_file=$file_path/wiki-18.jsonl
+corpus_file=$file_path/corpora.jsonl
 retriever_name=e5
 retriever_path=intfloat/e5-base-v2
 

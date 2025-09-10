@@ -15,8 +15,8 @@ export TEST_DATA_DIR='./data/amazon_data'
 # export BASE_MODEL='meta-llama/Llama-3.1-8B-Instruct'
 # export EXPERIMENT_NAME=nq-search-r1-grpo-llama3.1-8b-it-em
 
-# export BASE_MODEL='Llama/Llama-3.2-1B-Instruct'
-export BASE_MODEL='./base_model/Qwen/Qwen2.5-1.5B-Instruct'
+export BASE_MODEL='Llama/Llama-3.2-1B-Instruct'
+# export BASE_MODEL='./base_model/Qwen/Qwen2.5-1.5B-Instruct'
 export EXPERIMENT_NAME=amazon-search-r1-grpo-qwen2.5-3b-em
 # export BASE_MODEL='Qwen/Qwen2.5-3B-Instruct'
 # export EXPERIMENT_NAME=nq-search-r1-grpo-qwen2.5-3b-it-em
